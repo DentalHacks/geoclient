@@ -12,8 +12,8 @@
   #ifdef DLL_EXPORT
     #define GEOCLIENT_API __declspec(dllexport)
   #else
-    //#define GEOCLIENT_API __declspec(dllimport)
-    #define GEOCLIENT_API
+    #define GEOCLIENT_API __declspec(dllimport)
+    //#define GEOCLIENT_API
   #endif
 #else
   #include "geo.h"

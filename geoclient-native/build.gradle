@@ -48,6 +48,7 @@ model {
 
   toolChains {
     gcc(Gcc)
+    visualCpp(VisualCpp)
   }
 
   repositories {
@@ -105,6 +106,11 @@ model {
           linker.args "-Wl,--no-as-needed", "-L${gsLibraryPath}", "-lc", "-lgeo", "-lm", "-ledequiv", "-lapequiv", "-lsan", "-lsnd", "-lstExcpt", "-lStdLast", "-lStdUniv", "-lstEnder", "-lstretch", "-lthined"
         }
       }
+      if (toolChain in VisualCpp) {
+        cCompiler.args "/LD", "/Zi"
+        cCompiler.define "DLL_EXPORT"
+        linker.args "/LIBPATH:${gsLibraryPath}"
+      }
     }
     withType(NativeExecutableBinarySpec) {
       if (toolChain in Gcc) {
@@ -115,6 +121,11 @@ model {
         } else if (targetPlatform.operatingSystem.linux) {
           linker.args "-Wl,--no-as-needed", "-L${gsLibraryPath}", "-lc", "-lgeo", "-lm", "-ledequiv", "-lapequiv", "-lsan", "-lsnd", "-lstExcpt", "-lStdLast", "-lStdUniv", "-lstEnder", "-lstretch", "-lthined"
         }
+      }
+      if (toolChain in VisualCpp) {
+        cCompiler.args "/EHsc ${gsLibraryPath}/NYCgeo.lib", "/Zi"
+        cCompiler.define "DLL_IMPORT"
+        linker.args "/LIBPATH:${gsLibraryPath}"
       }
     }
   }
